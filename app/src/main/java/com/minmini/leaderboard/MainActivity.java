@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -38,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -53,7 +51,7 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
         mChart = findViewById(R.id.chart1);
@@ -61,7 +59,7 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         player_details.setDivider(null);
         player_details.setDividerHeight(0);
         mChart.getDescription().setEnabled(false);
-        mChart.setExtraOffsets(5, 0, 5, 5);
+        mChart.setExtraOffsets(5, 5, 5, 5);
 
         mChart.setDragDecelerationFrictionCoef(0.95f);
 
