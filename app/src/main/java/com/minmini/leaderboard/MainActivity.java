@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.minmini.leaderboard.app.MyApplication;
 import com.minmini.leaderboard.model.Leaderboard;
+import com.minmini.leaderboard.util.LeaderboardUtil;
 import com.minmini.leaderboard.util.LogMessage;
 import com.minmini.leaderboard.util.MultiValueMap;
 
@@ -47,13 +49,17 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
     private ListView player_details;
     private ArrayList<PieEntry> entries;
     private MultiValueMap<String, Leaderboard> rawData;
-
+    private Button update_chart, show_bar_chart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mChart = findViewById(R.id.chart1);
+
+        update_chart = findViewById(R.id.update_chart);
+        show_bar_chart = findViewById(R.id.show_bar_chart);
+
         player_details = findViewById(R.id.player_details);
         player_details.setDivider(null);
         player_details.setDividerHeight(0);
@@ -82,8 +88,10 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
 
         // add a selection listener
         mChart.setOnChartValueSelectedListener(this);
-
         dataPrepare();
+        update_chart.setOnClickListener(view -> dataPrepare());
+
+        show_bar_chart.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Coming Soon.", Toast.LENGTH_SHORT).show());
 
         Legend l = mChart.getLegend();
         l.setEnabled(false);
@@ -100,9 +108,16 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
                         Toast.makeText(getApplicationContext(), "Couldn't fetch the menu! Pleas try again.", Toast.LENGTH_LONG).show();
                     }else{
                         setData(response);
-                        mChart.setVisibility(View.VISIBLE);
                     }
-                }, error -> Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show());
+                }, error -> {
+            Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            String jsonData = LeaderboardUtil.AssetJSONFile("data.json", getApplicationContext());
+            try {
+                setData(new JSONArray(jsonData));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        });
         MyApplication.getInstance().addToRequestQueue(request);
     }
 
@@ -111,6 +126,10 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
                 R.layout.activity_listview, data);
         player_details.setAdapter(adapter);
         player_details.setVisibility(View.VISIBLE);
+    }
+
+    private void showToast(Object o) {
+        Toast.makeText(getApplicationContext(), String.valueOf(o), Toast.LENGTH_LONG).show();
     }
 
     private void setData(JSONArray response) {
@@ -137,6 +156,7 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         MyComparator comp=new MyComparator(board);
         Map<String,Float> newMap = new TreeMap<String,Float>(comp);
         newMap.putAll(board);
+        showLog(newMap);
         count = 0;
         for (Map.Entry<String, Float> entry : newMap.entrySet()) {
             String key = entry.getKey();
@@ -187,6 +207,7 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         mChart.highlightValues(null);
 
         mChart.invalidate();
+        mChart.setVisibility(View.VISIBLE);
     }
 
     class MyComparator implements Comparator {

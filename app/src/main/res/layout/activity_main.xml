@@ -37,6 +37,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/update_chart"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:text="@string/update"
@@ -44,6 +45,7 @@
                 tools:ignore="ButtonStyle" />
 
             <Button
+                android:id="@+id/show_bar_chart"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:text="@string/show_bar_chart"
