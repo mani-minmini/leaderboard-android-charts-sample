@@ -51,7 +51,6 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
         mChart = findViewById(R.id.chart1);
@@ -59,7 +58,7 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         player_details.setDivider(null);
         player_details.setDividerHeight(0);
         mChart.getDescription().setEnabled(false);
-        mChart.setExtraOffsets(5, 5, 5, 5);
+//        mChart.setExtraOffsets(5, 5, 5, 5);
 
         mChart.setDragDecelerationFrictionCoef(0.95f);
 
@@ -118,10 +117,6 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
     private void setData(JSONArray response) {
         int count;
         entries = new ArrayList<>();
-
-        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
-        // the chart.
-
         rawData = new MultiValueMap<>();
         for(int i=0; i < response.length(); i++) {
             try {
@@ -140,20 +135,13 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
             }
             board.put(entry.getKey(), score / entry.getValue().size());
         }
-
-        showLog(board);
-
         MyComparator comp=new MyComparator(board);
-
         Map<String,Float> newMap = new TreeMap<String,Float>(comp);
         newMap.putAll(board);
-
-        showLog(newMap);
         count = 0;
         for (Map.Entry<String, Float> entry : newMap.entrySet()) {
             String key = entry.getKey();
             Float value = entry.getValue();
-
             if(count < 5){
                 entries.add(new PieEntry(value, key, getResources().getDrawable(R.drawable.ic_launcher_background)));
             }
@@ -166,8 +154,6 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         dataSet.setSliceSpace(3f);
         dataSet.setIconsOffset(new MPPointF(0, 40));
         dataSet.setSelectionShift(5f);
-
-        // add a lot of colors
 
         ArrayList<Integer> colors = new ArrayList<>();
 
