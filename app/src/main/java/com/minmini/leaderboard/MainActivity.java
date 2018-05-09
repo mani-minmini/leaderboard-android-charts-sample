@@ -58,7 +58,6 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         player_details.setDivider(null);
         player_details.setDividerHeight(0);
         mChart.getDescription().setEnabled(false);
-//        mChart.setExtraOffsets(5, 5, 5, 5);
 
         mChart.setDragDecelerationFrictionCoef(0.95f);
 

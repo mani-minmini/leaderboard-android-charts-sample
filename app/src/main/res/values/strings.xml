@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Leaderboard</string>
     <string name="update">Update</string>
+    <string name="show_bar_chart">Show Bar Chart</string>
 </resources>
