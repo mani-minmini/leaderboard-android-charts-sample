@@ -53,30 +53,28 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bar_chart);
 
-        mChart = findViewById(R.id.chart2);
-
         Button update_chart = findViewById(R.id.update_chart);
         Button show_pie_chart = findViewById(R.id.show_pie_chart);
 
         player_details = findViewById(R.id.player_details);
         player_details.setDivider(null);
         player_details.setDividerHeight(0);
+
+        mChart = findViewById(R.id.chart2);
         mChart.getDescription().setEnabled(false);
         mChart.setDragDecelerationFrictionCoef(0.95f);
-        mChart.setDescription(null);
         mChart.setHighlightPerTapEnabled(true);
-        // add a selection listener
+
         mChart.setOnChartValueSelectedListener(this);
         dataPrepare();
         update_chart.setOnClickListener(view -> dataPrepare());
         show_pie_chart.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), MainActivity.class)));
-
-        Legend l = mChart.getLegend();
-        l.setEnabled(false);
-
     }
 
     private void dataPrepare() {
+        mChart.invalidate();
+        Legend l = mChart.getLegend();
+        l.setEnabled(false);
         JsonArrayRequest request = new JsonArrayRequest("http://192.168.1.38:3000/api/v1/leaderboards",
                 response -> {
                     if (response == null) {
@@ -137,7 +135,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
             String key = entry.getKey();
             Float value = entry.getValue();
             if (count < 5) {
-                entries.add(new BarEntry(value, count, getResources().getDrawable(R.drawable.ic_launcher_background)));
+                entries.add(new BarEntry(count, value, getResources().getDrawable(R.drawable.ic_launcher_background)));
             }
             count++;
         }
@@ -147,27 +145,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
 
         dataSet.setIconsOffset(new MPPointF(0, 0));
 
-
-        ArrayList<Integer> colors = new ArrayList<>();
-
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.JOYFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.LIBERTY_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.PASTEL_COLORS)
-            colors.add(c);
-
-        colors.add(ColorTemplate.getHoloBlue());
-
-        dataSet.setColors(colors);
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
 
         BarData data = new BarData(dataSet);

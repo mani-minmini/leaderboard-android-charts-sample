@@ -194,7 +194,7 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
 
         colors.add(ColorTemplate.getHoloBlue());
 
-        dataSet.setColors(colors);
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         dataSet.setSelectionShift(0f);
 
         PieData data = new PieData(dataSet);
