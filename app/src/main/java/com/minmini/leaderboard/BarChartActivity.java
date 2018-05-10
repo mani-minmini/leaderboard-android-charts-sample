@@ -61,6 +61,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     private ScrollView table_layout_bar_chart;
     private TableRow tableRow;
     private TextView textView;
+    private TableLayout table_layouts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
 
         relativeLayout = findViewById(R.id.relativeLayout);
         table_layout_bar_chart = findViewById(R.id.table_layout_bar_chart);
-
+        table_layouts = findViewById(R.id.table_layouts);
         Button update_chart = findViewById(R.id.update_chart);
         Button show_pie_chart = findViewById(R.id.show_pie_chart);
 
@@ -195,30 +196,37 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
             Date date;
             try {
                 date = dateFormat.parse(vals.getActivity_date());
-//                String s = "Name: " + vals.getPlayer_name() + ", Course: " + vals.getCourse() + ", Score: " + vals.getScore() + ", Activity Date: " + desiredDateFormat.format(date);
                 tableRow = new TableRow(this);
                 tableRow.setGravity(Gravity.CENTER);
                 tableRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 
                 textView = new TextView(this);
+                textView.setBackgroundColor(Color.WHITE);
                 textView.setText(vals.getPlayer_name());
+                textView.setGravity(Gravity.CENTER);
                 textView.setLayoutParams(new TableRow.LayoutParams(0));
-                textView.setLayoutParams(new TableRow.LayoutParams(250, TableRow.LayoutParams.WRAP_CONTENT));
+                textView.setLayoutParams(new TableRow.LayoutParams(200, TableRow.LayoutParams.WRAP_CONTENT));
                 tableRow.addView(textView);
 
                 textView = new TextView(this);
                 textView.setText(vals.getCourse());
+                textView.setGravity(Gravity.CENTER);
+                textView.setBackgroundColor(Color.WHITE);
                 textView.setLayoutParams(new TableRow.LayoutParams(1));
                 textView.setLayoutParams(new TableRow.LayoutParams(200, TableRow.LayoutParams.WRAP_CONTENT));
                 tableRow.addView(textView);
 
                 textView = new TextView(this);
                 textView.setText(vals.getScore());
+                textView.setGravity(Gravity.CENTER);
+                textView.setBackgroundColor(Color.WHITE);
                 textView.setLayoutParams(new TableRow.LayoutParams(2));
                 textView.setLayoutParams(new TableRow.LayoutParams(200, TableRow.LayoutParams.WRAP_CONTENT));
                 tableRow.addView(textView);
 
                 textView = new TextView(this);
+                textView.setGravity(Gravity.CENTER);
+                textView.setBackgroundColor(Color.WHITE);
                 textView.setText(desiredDateFormat.format(date));
                 textView.setLayoutParams(new TableRow.LayoutParams(3));
                 textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
@@ -231,6 +239,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         }
         table_layout_bar_chart.addView(tableLayout);
         table_layout_bar_chart.setVisibility(View.VISIBLE);
+        table_layouts.setVisibility(View.VISIBLE);
     }
 
     @Override
