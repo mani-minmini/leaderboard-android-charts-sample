@@ -187,43 +187,41 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         Log.i("VAL SELECTED",
                 "Value: " + e.getY() + ", index: " + h.getX()
                         + ", DataSet index: " + h.getDataSetIndex());
+        table_layout_bar_chart.removeAllViewsInLayout();
         TableLayout tableLayout = new TableLayout(this);
-//        LinearLayout parent = new LinearLayout(this);
-//        parent.setOrientation(LinearLayout.HORIZONTAL);
-//        parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         for (Leaderboard vals : rawData.getValues(players.get((int) h.getX()))) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
             SimpleDateFormat desiredDateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
             Date date;
             try {
                 date = dateFormat.parse(vals.getActivity_date());
-                String s = "Name: " + vals.getPlayer_name() + ", Course: " + vals.getCourse() + ", Score: " + vals.getScore() + ", Activity Date: " + desiredDateFormat.format(date);
+//                String s = "Name: " + vals.getPlayer_name() + ", Course: " + vals.getCourse() + ", Score: " + vals.getScore() + ", Activity Date: " + desiredDateFormat.format(date);
                 tableRow = new TableRow(this);
                 tableRow.setGravity(Gravity.CENTER);
                 tableRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 
                 textView = new TextView(this);
-//              ViewGroup.LayoutParams params = textView.getLayoutParams();
-//              params.height = 80;
-//              textView.setLayoutParams(params);
                 textView.setText(vals.getPlayer_name());
                 textView.setLayoutParams(new TableRow.LayoutParams(0));
+                textView.setLayoutParams(new TableRow.LayoutParams(250, TableRow.LayoutParams.WRAP_CONTENT));
                 tableRow.addView(textView);
 
                 textView = new TextView(this);
                 textView.setText(vals.getCourse());
                 textView.setLayoutParams(new TableRow.LayoutParams(1));
-
+                textView.setLayoutParams(new TableRow.LayoutParams(200, TableRow.LayoutParams.WRAP_CONTENT));
                 tableRow.addView(textView);
 
                 textView = new TextView(this);
                 textView.setText(vals.getScore());
                 textView.setLayoutParams(new TableRow.LayoutParams(2));
+                textView.setLayoutParams(new TableRow.LayoutParams(200, TableRow.LayoutParams.WRAP_CONTENT));
                 tableRow.addView(textView);
 
                 textView = new TextView(this);
                 textView.setText(desiredDateFormat.format(date));
                 textView.setLayoutParams(new TableRow.LayoutParams(3));
+                textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
                 tableRow.addView(textView);
 
                 tableLayout.addView(tableRow);
