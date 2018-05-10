@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class LeaderboardUtil {
+
+    public static final String LEADERBOARD_URL = "http://192.168.1.38:3000/api/v1/leaderboards";
+
     public static String AssetJSONFile(String filename, Context context) {
         AssetManager manager = context.getAssets();
         InputStream file = null;

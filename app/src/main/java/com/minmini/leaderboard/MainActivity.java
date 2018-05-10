@@ -44,6 +44,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import static com.minmini.leaderboard.util.LeaderboardUtil.LEADERBOARD_URL;
+
 public class MainActivity extends Activity implements OnChartValueSelectedListener, LogMessage {
 
     private PieChart mChart;
@@ -103,7 +105,7 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
     }
 
     private void dataPrepare() {
-        JsonArrayRequest request = new JsonArrayRequest("http://192.168.1.38:3000/api/v1/leaderboards",
+        JsonArrayRequest request = new JsonArrayRequest(LEADERBOARD_URL,
                 response -> {
                     if (response == null) {
                         Toast.makeText(getApplicationContext(), "Couldn't fetch the menu! Pleas try again.", Toast.LENGTH_LONG).show();
@@ -175,24 +177,24 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         dataSet.setIconsOffset(new MPPointF(0, 40));
         dataSet.setSelectionShift(5f);
 
-        ArrayList<Integer> colors = new ArrayList<>();
-
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.JOYFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.LIBERTY_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.PASTEL_COLORS)
-            colors.add(c);
-
-        colors.add(ColorTemplate.getHoloBlue());
+//        ArrayList<Integer> colors = new ArrayList<>();
+//
+//        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+//            colors.add(c);
+//
+//        for (int c : ColorTemplate.JOYFUL_COLORS)
+//            colors.add(c);
+//
+//        for (int c : ColorTemplate.COLORFUL_COLORS)
+//            colors.add(c);
+//
+//        for (int c : ColorTemplate.LIBERTY_COLORS)
+//            colors.add(c);
+//
+//        for (int c : ColorTemplate.PASTEL_COLORS)
+//            colors.add(c);
+//
+//        colors.add(ColorTemplate.getHoloBlue());
 
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         dataSet.setSelectionShift(0f);
@@ -211,14 +213,11 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         mChart.setVisibility(View.VISIBLE);
     }
 
-    class MyComparator implements Comparator {
-
+    private class MyComparator implements Comparator {
         Map<String, Float> map;
-
         MyComparator(Map<String, Float> map) {
             this.map = map;
         }
-
         public int compare(Object o1, Object o2) {
             return (map.get(o2)).compareTo(map.get(o1));
         }

@@ -41,6 +41,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import static com.minmini.leaderboard.util.LeaderboardUtil.LEADERBOARD_URL;
+
 public class BarChartActivity extends Activity implements OnChartValueSelectedListener, LogMessage {
 
     private BarChart mChart;
@@ -72,10 +74,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     }
 
     private void dataPrepare() {
-        mChart.invalidate();
-        Legend l = mChart.getLegend();
-        l.setEnabled(false);
-        JsonArrayRequest request = new JsonArrayRequest("http://192.168.1.38:3000/api/v1/leaderboards",
+        JsonArrayRequest request = new JsonArrayRequest(LEADERBOARD_URL,
                 response -> {
                     if (response == null) {
                         Toast.makeText(getApplicationContext(), "Couldn't fetch the menu! Pleas try again.", Toast.LENGTH_LONG).show();
@@ -83,7 +82,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
                         setData(response);
                     }
                 }, error -> {
-            Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             String jsonData = LeaderboardUtil.AssetJSONFile("data.json", getApplicationContext());
             try {
                 setData(new JSONArray(jsonData));
@@ -106,6 +105,8 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     }
 
     private void setData(JSONArray response) {
+        Legend l = mChart.getLegend();
+        l.setEnabled(false);
         int count;
         entries = new ArrayList<>();
         rawData = new MultiValueMap<>();
@@ -146,7 +147,6 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         dataSet.setIconsOffset(new MPPointF(0, 0));
 
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-
 
         BarData data = new BarData(dataSet);
         data.setValueFormatter(new PercentFormatter());
@@ -192,7 +192,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         Log.i("BarChart", "nothing selected");
     }
 
-    class MyComparator implements Comparator {
+    private class MyComparator implements Comparator {
 
         Map<String, Float> map;
 
