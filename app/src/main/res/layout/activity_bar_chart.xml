@@ -17,9 +17,9 @@
             android:id="@+id/chart2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
             android:visibility="invisible" />
     </LinearLayout>
 
@@ -53,14 +53,52 @@
                 android:text="@string/show_pie_chart"
                 android:textAllCaps="false"
                 tools:ignore="ButtonStyle" />
+
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/player_details"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:scrollbars="vertical"
-            android:visibility="invisible" />
+            android:layout_height="200dp">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:text="Name" />
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:text="Course" />
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:text="Score" />
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="3"
+                        android:text="Date" />
+                </TableRow>
+
+            </TableLayout>
+        </ScrollView>
+
+
     </LinearLayout>
 
 </RelativeLayout>
