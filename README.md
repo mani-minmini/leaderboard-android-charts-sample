@@ -1,1 +1,1 @@
-"# leaderboard-android-charts-sample" 
+# Leaderboard Android Charts Sample
