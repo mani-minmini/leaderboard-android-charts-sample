@@ -2,4 +2,6 @@
     <string name="app_name">Leaderboard</string>
     <string name="update">Update</string>
     <string name="show_bar_chart">Show Bar Chart</string>
+    <string name="title_activity_bar_chart">BarChartActivity</string>
+    <string name="show_pie_chart">Show Pie Chart</string>
 </resources>

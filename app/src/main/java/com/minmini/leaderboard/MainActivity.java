@@ -2,6 +2,7 @@ package com.minmini.leaderboard;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,7 +50,7 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
     private ListView player_details;
     private ArrayList<PieEntry> entries;
     private MultiValueMap<String, Leaderboard> rawData;
-    private Button update_chart, show_bar_chart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +58,8 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
 
         mChart = findViewById(R.id.chart1);
 
-        update_chart = findViewById(R.id.update_chart);
-        show_bar_chart = findViewById(R.id.show_bar_chart);
+        Button update_chart = findViewById(R.id.update_chart);
+        Button show_bar_chart = findViewById(R.id.show_bar_chart);
 
         player_details = findViewById(R.id.player_details);
         player_details.setDivider(null);
@@ -91,7 +92,7 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         dataPrepare();
         update_chart.setOnClickListener(view -> dataPrepare());
 
-        show_bar_chart.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Coming Soon.", Toast.LENGTH_SHORT).show());
+        show_bar_chart.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), BarChartActivity.class)));
 
         Legend l = mChart.getLegend();
         l.setEnabled(false);
