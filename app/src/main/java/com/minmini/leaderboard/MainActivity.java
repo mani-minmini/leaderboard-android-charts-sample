@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -60,16 +61,16 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
     private ScrollView table_layout_bar_chart;
     private TableRow tableRow;
     private TextView textView;
-    private TableLayout table_layouts;
+    private LinearLayout table_layouts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        table_layouts = findViewById(R.id.table_layouts);
+        table_layouts.setVisibility(View.INVISIBLE);
         relativeLayout = findViewById(R.id.relativeLayout);
         table_layout_bar_chart = findViewById(R.id.table_layout_bar_chart);
-        table_layouts = findViewById(R.id.table_layouts);
 
         mChart = findViewById(R.id.chart1);
 

@@ -57,59 +57,50 @@
         </LinearLayout>
 
 
-            <TableLayout
-                android:id="@+id/table_layouts"
-                android:layout_width="match_parent"
-                android:visibility="invisible"
-                android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/table_layouts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:visibility="visible">
 
-                <TableRow
-                    android:background="@color/colorPrimary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center">
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/name"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:text="@string/name"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold" />
+            <TextView
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:text="@string/course"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:text="@string/course"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold" />
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/score"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:text="@string/score"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_date"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="3"
-                        android:text="@string/activity_date"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold" />
-                </TableRow>
+        </LinearLayout>
 
-                <ScrollView
-                    android:id="@+id/table_layout_bar_chart"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp">
+        <ScrollView
+            android:id="@+id/table_layout_bar_chart"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
 
-                </ScrollView>
-            </TableLayout>
+        </ScrollView>
 
     </LinearLayout>
 

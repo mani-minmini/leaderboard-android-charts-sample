@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -61,16 +62,17 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     private ScrollView table_layout_bar_chart;
     private TableRow tableRow;
     private TextView textView;
-    private TableLayout table_layouts;
+    private LinearLayout table_layouts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bar_chart);
-
+        table_layouts = findViewById(R.id.table_layouts);
+        table_layouts.setVisibility(View.INVISIBLE);
         relativeLayout = findViewById(R.id.relativeLayout);
         table_layout_bar_chart = findViewById(R.id.table_layout_bar_chart);
-        table_layouts = findViewById(R.id.table_layouts);
+
         Button update_chart = findViewById(R.id.update_chart);
         Button show_pie_chart = findViewById(R.id.show_pie_chart);
 
