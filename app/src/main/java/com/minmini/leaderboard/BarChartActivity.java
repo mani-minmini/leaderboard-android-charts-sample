@@ -203,6 +203,9 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
                 tableRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 
                 textView = new TextView(this);
+//              ViewGroup.LayoutParams params = textView.getLayoutParams();
+//              params.height = 80;
+//              textView.setLayoutParams(params);
                 textView.setText(vals.getPlayer_name());
                 textView.setLayoutParams(new TableRow.LayoutParams(0));
                 tableRow.addView(textView);
@@ -210,6 +213,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
                 textView = new TextView(this);
                 textView.setText(vals.getCourse());
                 textView.setLayoutParams(new TableRow.LayoutParams(1));
+
                 tableRow.addView(textView);
 
                 textView = new TextView(this);
