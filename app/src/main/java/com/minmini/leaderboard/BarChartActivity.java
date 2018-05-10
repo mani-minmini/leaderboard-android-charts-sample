@@ -74,23 +74,8 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         mChart.getDescription().setEnabled(false);
         mChart.setFitBars(true);
         mChart.setDoubleTapToZoomEnabled(false);
-        mChart.zoomOut();
         mChart.setPinchZoom(false);
-        mChart.setHighlightFullBarEnabled(false);
-
-//        mChart.setDragDecelerationFrictionCoef(0.95f);
-////        mChart.zoomOut();
-//        mChart.setHighlightPerTapEnabled(false); // Don't Use It
-//        mChart.setDrawBarShadow(false);
-//        mChart.setDrawValueAboveBar(false);
-//        mChart.setHighlightFullBarEnabled(true);
-//
-//        mChart.setTouchEnabled(true);
-//        mChart.setUnbindEnabled(true);
-//        mChart.setActivated(false);
-//        mChart.setClickable(true);
-//        mChart.setFocusableInTouchMode(false);
-//        mChart.setPressed(false);
+        mChart.setScaleEnabled(false);
 
         mChart.setOnChartValueSelectedListener(this);
         dataPrepare();
@@ -176,9 +161,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         dataSet.setIconsOffset(new MPPointF(0, 0));
 
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-
-        dataSet.setHighlightEnabled(true);
-        dataSet.setHighLightColor(Color.WHITE);
+        dataSet.setHighLightAlpha(0);
 
         dataSet.setDrawIcons(false);
         BarData data = new BarData(dataSet);
