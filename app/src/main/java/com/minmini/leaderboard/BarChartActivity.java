@@ -5,11 +5,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -34,8 +36,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -49,11 +54,14 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     private ListView player_details;
     private ArrayList<BarEntry> entries;
     private MultiValueMap<String, Leaderboard> rawData;
+    private RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bar_chart);
+
+        relativeLayout = findViewById(R.id.relativeLayout);
 
         Button update_chart = findViewById(R.id.update_chart);
         Button show_pie_chart = findViewById(R.id.show_pie_chart);
@@ -64,8 +72,25 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
 
         mChart = findViewById(R.id.chart2);
         mChart.getDescription().setEnabled(false);
-        mChart.setDragDecelerationFrictionCoef(0.95f);
-        mChart.setHighlightPerTapEnabled(true);
+        mChart.setFitBars(true);
+        mChart.setDoubleTapToZoomEnabled(false);
+        mChart.zoomOut();
+        mChart.setPinchZoom(false);
+        mChart.setHighlightFullBarEnabled(false);
+
+//        mChart.setDragDecelerationFrictionCoef(0.95f);
+////        mChart.zoomOut();
+//        mChart.setHighlightPerTapEnabled(false); // Don't Use It
+//        mChart.setDrawBarShadow(false);
+//        mChart.setDrawValueAboveBar(false);
+//        mChart.setHighlightFullBarEnabled(true);
+//
+//        mChart.setTouchEnabled(true);
+//        mChart.setUnbindEnabled(true);
+//        mChart.setActivated(false);
+//        mChart.setClickable(true);
+//        mChart.setFocusableInTouchMode(false);
+//        mChart.setPressed(false);
 
         mChart.setOnChartValueSelectedListener(this);
         dataPrepare();
@@ -102,6 +127,10 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
 
     private void showToast(Object o) {
         Toast.makeText(getApplicationContext(), String.valueOf(o), Toast.LENGTH_LONG).show();
+    }
+
+    private void showSnackBar(Object o) {
+        Snackbar.make(relativeLayout, String.valueOf(o), Snackbar.LENGTH_LONG).show();
     }
 
     private void setData(JSONArray response) {
@@ -148,6 +177,10 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
 
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
+        dataSet.setHighlightEnabled(true);
+        dataSet.setHighLightColor(Color.WHITE);
+
+        dataSet.setDrawIcons(false);
         BarData data = new BarData(dataSet);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(18f);
@@ -165,26 +198,27 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     @SuppressLint("SimpleDateFormat")
     @Override
     public void onValueSelected(Entry e, Highlight h) {
+        showSnackBar("Selected");
         if (e == null)
             return;
         Log.i("VAL SELECTED",
                 "Value: " + e.getY() + ", index: " + h.getX()
                         + ", DataSet index: " + h.getDataSetIndex());
-//        BarEntry barEntry = entries.get((int) Float.parseFloat(String.valueOf(h.getX())));
-//        ArrayList<String> stringArrayList  = new ArrayList<>();
-//        for (Leaderboard vals: rawData.getValues(barEntry.getY())){
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-//            SimpleDateFormat desiredDateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
-//            Date date;
-//            try {
-//                date = dateFormat.parse(vals.getActivity_date());
-//                String s = "Name: " + vals.getPlayer_name() + ", Course: " + vals.getCourse() + ", Score: " + vals.getScore() + ", Activity Date: " + desiredDateFormat.format(date);
-//                stringArrayList.add(s);
-//            } catch (ParseException e1) {
-//                e1.printStackTrace();
-//            }
-//        }
-//        showData(stringArrayList);
+        BarEntry barEntry = entries.get((int) Float.parseFloat(String.valueOf(h.getX())));
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        for (Leaderboard vals : rawData.getValues("Mohan")) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            SimpleDateFormat desiredDateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
+            Date date;
+            try {
+                date = dateFormat.parse(vals.getActivity_date());
+                String s = "Name: " + vals.getPlayer_name() + ", Course: " + vals.getCourse() + ", Score: " + vals.getScore() + ", Activity Date: " + desiredDateFormat.format(date);
+                stringArrayList.add(s);
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+        }
+        showData(stringArrayList);
     }
 
     @Override
