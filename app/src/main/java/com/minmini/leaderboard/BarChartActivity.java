@@ -7,10 +7,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -35,8 +39,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -51,6 +58,9 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     private ArrayList<String> players;
     private MultiValueMap<String, Leaderboard> rawData;
     private RelativeLayout relativeLayout;
+    private ScrollView table_layout_bar_chart;
+    private TableRow tableRow;
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +68,10 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         setContentView(R.layout.activity_bar_chart);
 
         relativeLayout = findViewById(R.id.relativeLayout);
+        table_layout_bar_chart = findViewById(R.id.table_layout_bar_chart);
 
         Button update_chart = findViewById(R.id.update_chart);
         Button show_pie_chart = findViewById(R.id.show_pie_chart);
-
-//        player_details = findViewById(R.id.player_details);
-//        player_details.setDivider(null);
-//        player_details.setDividerHeight(0);
 
         mChart = findViewById(R.id.chart2);
         mChart.getDescription().setEnabled(false);
@@ -97,13 +104,6 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
             }
         });
         MyApplication.getInstance().addToRequestQueue(request);
-    }
-
-    private void showData(ArrayList<String> data) {
-        ArrayAdapter adapter = new ArrayAdapter<>(this,
-                R.layout.activity_listview, data);
-//        player_details.setAdapter(adapter);
-//        player_details.setVisibility(View.VISIBLE);
     }
 
     private void showToast(Object o) {
@@ -187,20 +187,48 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         Log.i("VAL SELECTED",
                 "Value: " + e.getY() + ", index: " + h.getX()
                         + ", DataSet index: " + h.getDataSetIndex());
-//        ArrayList<String> stringArrayList = new ArrayList<>();
-//        for (Leaderboard vals : rawData.getValues(players.get((int) h.getX()))) {
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-//            SimpleDateFormat desiredDateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
-//            Date date;
-//            try {
-//                date = dateFormat.parse(vals.getActivity_date());
-//                String s = "Name: " + vals.getPlayer_name() + ", Course: " + vals.getCourse() + ", Score: " + vals.getScore() + ", Activity Date: " + desiredDateFormat.format(date);
-//                stringArrayList.add(s);
-//            } catch (ParseException e1) {
-//                e1.printStackTrace();
-//            }
-//        }
-//        showData(stringArrayList);
+        TableLayout tableLayout = new TableLayout(this);
+//        LinearLayout parent = new LinearLayout(this);
+//        parent.setOrientation(LinearLayout.HORIZONTAL);
+//        parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        for (Leaderboard vals : rawData.getValues(players.get((int) h.getX()))) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            SimpleDateFormat desiredDateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
+            Date date;
+            try {
+                date = dateFormat.parse(vals.getActivity_date());
+                String s = "Name: " + vals.getPlayer_name() + ", Course: " + vals.getCourse() + ", Score: " + vals.getScore() + ", Activity Date: " + desiredDateFormat.format(date);
+                tableRow = new TableRow(this);
+                tableRow.setGravity(Gravity.CENTER);
+                tableRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+                textView = new TextView(this);
+                textView.setText(vals.getPlayer_name());
+                textView.setLayoutParams(new TableRow.LayoutParams(0));
+                tableRow.addView(textView);
+
+                textView = new TextView(this);
+                textView.setText(vals.getCourse());
+                textView.setLayoutParams(new TableRow.LayoutParams(1));
+                tableRow.addView(textView);
+
+                textView = new TextView(this);
+                textView.setText(vals.getScore());
+                textView.setLayoutParams(new TableRow.LayoutParams(2));
+                tableRow.addView(textView);
+
+                textView = new TextView(this);
+                textView.setText(desiredDateFormat.format(date));
+                textView.setLayoutParams(new TableRow.LayoutParams(3));
+                tableRow.addView(textView);
+
+                tableLayout.addView(tableRow);
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+        }
+        table_layout_bar_chart.addView(tableLayout);
+        table_layout_bar_chart.setVisibility(View.VISIBLE);
     }
 
     @Override

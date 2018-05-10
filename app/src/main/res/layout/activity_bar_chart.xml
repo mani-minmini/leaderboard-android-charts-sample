@@ -56,15 +56,15 @@
 
         </LinearLayout>
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="200dp">
+
 
             <TableLayout
                 android:layout_width="match_parent"
+                android:visibility="visible"
                 android:layout_height="wrap_content">
 
                 <TableRow
+                    android:background="@color/colorPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -74,30 +74,42 @@
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
-                        android:text="Name" />
+                        android:text="@string/name"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:layout_column="1"
-                        android:text="Course" />
+                        android:text="@string/course"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:layout_column="2"
-                        android:text="Score" />
+                        android:text="@string/score"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:layout_width="80dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="3"
-                        android:text="Date" />
+                        android:text="@string/activity_date"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
                 </TableRow>
 
-            </TableLayout>
-        </ScrollView>
+                <ScrollView
+                    android:id="@+id/table_layout_bar_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp">
 
+                </ScrollView>
+            </TableLayout>
 
     </LinearLayout>
 
