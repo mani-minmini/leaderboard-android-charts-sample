@@ -52,7 +52,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
 
     private BarChart mChart;
     private ListView player_details;
-    private ArrayList<BarEntry> entries;
+    private ArrayList<String> players;
     private MultiValueMap<String, Leaderboard> rawData;
     private RelativeLayout relativeLayout;
 
@@ -122,7 +122,8 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         Legend l = mChart.getLegend();
         l.setEnabled(false);
         int count;
-        entries = new ArrayList<>();
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        players = new ArrayList<>();
         rawData = new MultiValueMap<>();
         for (int i = 0; i < response.length(); i++) {
             try {
@@ -151,10 +152,11 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
             Float value = entry.getValue();
             if (count < 5) {
                 entries.add(new BarEntry(count, value, getResources().getDrawable(R.drawable.ic_launcher_background)));
+                players.add(key);
             }
             count++;
         }
-        BarDataSet dataSet = new BarDataSet(entries, "Data");
+        BarDataSet dataSet = new BarDataSet(entries, null);
 
         dataSet.setDrawIcons(false);
 
@@ -181,15 +183,13 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     @SuppressLint("SimpleDateFormat")
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-        showSnackBar("Selected");
         if (e == null)
             return;
         Log.i("VAL SELECTED",
                 "Value: " + e.getY() + ", index: " + h.getX()
                         + ", DataSet index: " + h.getDataSetIndex());
-        BarEntry barEntry = entries.get((int) Float.parseFloat(String.valueOf(h.getX())));
         ArrayList<String> stringArrayList = new ArrayList<>();
-        for (Leaderboard vals : rawData.getValues("Mohan")) {
+        for (Leaderboard vals : rawData.getValues(players.get((int) h.getX()))) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
             SimpleDateFormat desiredDateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
             Date date;
