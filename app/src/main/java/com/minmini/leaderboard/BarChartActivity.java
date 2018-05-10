@@ -78,6 +78,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         mChart.getDescription().setEnabled(false);
         mChart.setFitBars(true);
         mChart.setDoubleTapToZoomEnabled(false);
+        mChart.setHighlightFullBarEnabled(false);
         mChart.setPinchZoom(false);
         mChart.setScaleEnabled(false);
         mChart.setOnChartValueSelectedListener(this);
@@ -178,6 +179,9 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
 
         mChart.invalidate();
         mChart.setVisibility(View.VISIBLE);
+
+        mChart.getAxisLeft().setAxisMaximum(100);
+        mChart.getAxisLeft().setAxisMinimum(0);
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -213,7 +217,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
                 textView.setGravity(Gravity.CENTER);
                 textView.setBackgroundColor(Color.WHITE);
                 textView.setLayoutParams(new TableRow.LayoutParams(1));
-                textView.setLayoutParams(new TableRow.LayoutParams(200, TableRow.LayoutParams.WRAP_CONTENT));
+                textView.setLayoutParams(new TableRow.LayoutParams(100, TableRow.LayoutParams.WRAP_CONTENT));
                 tableRow.addView(textView);
 
                 textView = new TextView(this);

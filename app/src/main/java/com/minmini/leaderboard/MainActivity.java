@@ -6,10 +6,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -49,23 +53,30 @@ import static com.minmini.leaderboard.util.LeaderboardUtil.LEADERBOARD_URL;
 public class MainActivity extends Activity implements OnChartValueSelectedListener, LogMessage {
 
     private PieChart mChart;
-    private ListView player_details;
     private ArrayList<PieEntry> entries;
     private MultiValueMap<String, Leaderboard> rawData;
+
+    private RelativeLayout relativeLayout;
+    private ScrollView table_layout_bar_chart;
+    private TableRow tableRow;
+    private TextView textView;
+    private TableLayout table_layouts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        relativeLayout = findViewById(R.id.relativeLayout);
+        table_layout_bar_chart = findViewById(R.id.table_layout_bar_chart);
+        table_layouts = findViewById(R.id.table_layouts);
+
         mChart = findViewById(R.id.chart1);
 
         Button update_chart = findViewById(R.id.update_chart);
         Button show_bar_chart = findViewById(R.id.show_bar_chart);
 
-        player_details = findViewById(R.id.player_details);
-        player_details.setDivider(null);
-        player_details.setDividerHeight(0);
+
         mChart.getDescription().setEnabled(false);
 
         mChart.setDragDecelerationFrictionCoef(0.95f);
@@ -122,13 +133,6 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
             }
         });
         MyApplication.getInstance().addToRequestQueue(request);
-    }
-
-    private void showData(ArrayList<String> data){
-        ArrayAdapter adapter = new ArrayAdapter<>(this,
-                R.layout.activity_listview, data);
-        player_details.setAdapter(adapter);
-        player_details.setVisibility(View.VISIBLE);
     }
 
     private void showToast(Object o) {
@@ -232,19 +236,60 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
                         + ", DataSet index: " + h.getDataSetIndex());
         PieEntry pieEntry = entries.get((int) Float.parseFloat(String.valueOf(h.getX())));
         ArrayList<String> stringArrayList  = new ArrayList<>();
+
+        table_layout_bar_chart.removeAllViewsInLayout();
+        TableLayout tableLayout = new TableLayout(this);
+
         for (Leaderboard vals: rawData.getValues(pieEntry.getLabel())){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
             SimpleDateFormat desiredDateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
             Date date;
             try {
                 date = dateFormat.parse(vals.getActivity_date());
-                String s = "Name: " + vals.getPlayer_name() + ", Course: " + vals.getCourse() + ", Score: " + vals.getScore() + ", Activity Date: " + desiredDateFormat.format(date);
-                stringArrayList.add(s);
+                tableRow = new TableRow(this);
+                tableRow.setGravity(Gravity.CENTER);
+                tableRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+                textView = new TextView(this);
+                textView.setBackgroundColor(Color.WHITE);
+                textView.setText(vals.getPlayer_name());
+                textView.setGravity(Gravity.CENTER);
+                textView.setLayoutParams(new TableRow.LayoutParams(0));
+                textView.setLayoutParams(new TableRow.LayoutParams(200, TableRow.LayoutParams.WRAP_CONTENT));
+                tableRow.addView(textView);
+
+                textView = new TextView(this);
+                textView.setText(vals.getCourse());
+                textView.setGravity(Gravity.CENTER);
+                textView.setBackgroundColor(Color.WHITE);
+                textView.setLayoutParams(new TableRow.LayoutParams(1));
+                textView.setLayoutParams(new TableRow.LayoutParams(100, TableRow.LayoutParams.WRAP_CONTENT));
+                tableRow.addView(textView);
+
+                textView = new TextView(this);
+                textView.setText(vals.getScore());
+                textView.setGravity(Gravity.CENTER);
+                textView.setBackgroundColor(Color.WHITE);
+                textView.setLayoutParams(new TableRow.LayoutParams(2));
+                textView.setLayoutParams(new TableRow.LayoutParams(200, TableRow.LayoutParams.WRAP_CONTENT));
+                tableRow.addView(textView);
+
+                textView = new TextView(this);
+                textView.setGravity(Gravity.CENTER);
+                textView.setBackgroundColor(Color.WHITE);
+                textView.setText(desiredDateFormat.format(date));
+                textView.setLayoutParams(new TableRow.LayoutParams(3));
+                textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+                tableRow.addView(textView);
+
+                tableLayout.addView(tableRow);
             } catch (ParseException e1) {
                 e1.printStackTrace();
             }
         }
-        showData(stringArrayList);
+        table_layout_bar_chart.addView(tableLayout);
+        table_layout_bar_chart.setVisibility(View.VISIBLE);
+        table_layouts.setVisibility(View.VISIBLE);
     }
 
     @Override
