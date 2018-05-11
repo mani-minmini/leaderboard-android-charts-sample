@@ -10,7 +10,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -57,10 +56,7 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
     private ArrayList<PieEntry> entries;
     private MultiValueMap<String, Leaderboard> rawData;
 
-    private RelativeLayout relativeLayout;
     private ScrollView table_layout_bar_chart;
-    private TableRow tableRow;
-    private TextView textView;
     private LinearLayout table_layouts;
 
     @Override
@@ -69,14 +65,12 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         setContentView(R.layout.activity_main);
         table_layouts = findViewById(R.id.table_layouts);
         table_layouts.setVisibility(View.INVISIBLE);
-        relativeLayout = findViewById(R.id.relativeLayout);
         table_layout_bar_chart = findViewById(R.id.table_layout_bar_chart);
 
         mChart = findViewById(R.id.chart1);
 
         Button update_chart = findViewById(R.id.update_chart);
         Button show_bar_chart = findViewById(R.id.show_bar_chart);
-
 
         mChart.getDescription().setEnabled(false);
 
@@ -247,11 +241,11 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
             Date date;
             try {
                 date = dateFormat.parse(vals.getActivity_date());
-                tableRow = new TableRow(this);
+                TableRow tableRow = new TableRow(this);
                 tableRow.setGravity(Gravity.CENTER);
                 tableRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 
-                textView = new TextView(this);
+                TextView textView = new TextView(this);
                 textView.setBackgroundColor(Color.WHITE);
                 textView.setText(vals.getPlayer_name());
                 textView.setGravity(Gravity.CENTER);

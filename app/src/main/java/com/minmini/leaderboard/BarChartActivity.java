@@ -22,7 +22,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.IMarker;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -49,7 +48,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -59,7 +57,6 @@ import static com.minmini.leaderboard.util.LeaderboardUtil.LEADERBOARD_URL;
 public class BarChartActivity extends Activity implements OnChartValueSelectedListener, LogMessage {
 
     private BarChart mChart;
-    //    private ListView player_details;
     private ArrayList<String> players;
     private MultiValueMap<String, Leaderboard> rawData;
     private RelativeLayout relativeLayout;
@@ -132,16 +129,6 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     }
 
     private void setData(JSONArray response) {
-        List<LegendEntry> legendEntry = new ArrayList<>();
-        LegendEntry legendEntry1;
-
-        legendEntry1 = new LegendEntry();
-        legendEntry1.label = "A";
-        legendEntry.add(legendEntry1);
-        legendEntry1 = new LegendEntry();
-        legendEntry1.label = "B";
-        legendEntry.add(legendEntry1);
-
         Legend legend = mChart.getLegend();
         legend.setWordWrapEnabled(true);
         legend.setForm(Legend.LegendForm.SQUARE);
@@ -151,7 +138,6 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         legend.setYEntrySpace(5f);
         legend.setEnabled(true);
 
-//        legend.setCustom(legendEntry);
         int count;
         ArrayList<BarEntry> entries = new ArrayList<>();
         players = new ArrayList<>();
