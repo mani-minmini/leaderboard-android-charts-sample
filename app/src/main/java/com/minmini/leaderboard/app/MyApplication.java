@@ -6,11 +6,11 @@ import android.text.TextUtils;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.minmini.leaderboard.util.LeaderboardUtil;
 
 public class MyApplication extends Application {
 
-    public static final String TAG = MyApplication.class
-            .getSimpleName();
+    public static final String TAG = MyApplication.class.getSimpleName();
 
     private RequestQueue mRequestQueue;
 
@@ -19,6 +19,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        LeaderboardUtil.setContext(getApplicationContext());
         mInstance = this;
     }
 

@@ -2,7 +2,6 @@ package com.minmini.leaderboard;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -91,26 +90,30 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
 
         mChart.setOnChartValueSelectedListener(this);
 
-        IMarker marker = new MyMarkerView(getApplicationContext(), R.layout.tool_tip);
+        IMarker marker = new MyMarkerView(LeaderboardUtil.getContext(), R.layout.tool_tip);
 
         mChart.setMarker(marker);
 
         dataPrepare();
         update_chart.setOnClickListener(view -> dataPrepare());
-        show_pie_chart.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), MainActivity.class)));
+        show_pie_chart.setOnClickListener(view ->
+                {
+                    startActivity(LeaderboardUtil.getIntentPeiChart());
+                }
+        );
     }
 
     private void dataPrepare() {
         JsonArrayRequest request = new JsonArrayRequest(LEADERBOARD_URL,
                 response -> {
                     if (response == null) {
-                        Toast.makeText(getApplicationContext(), "Couldn't fetch the menu! Pleas try again.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(LeaderboardUtil.getContext(), "Couldn't fetch the menu! Pleas try again.", Toast.LENGTH_LONG).show();
                     } else {
                         setData(response);
                     }
                 }, error -> {
-//            Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            String jsonData = LeaderboardUtil.AssetJSONFile("data.json", getApplicationContext());
+//            Toast.makeText(LeaderboardUtil.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            String jsonData = LeaderboardUtil.AssetJSONFile("data.json", LeaderboardUtil.getContext());
             try {
                 setData(new JSONArray(jsonData));
             } catch (JSONException e) {
@@ -121,7 +124,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     }
 
     private void showToast(Object o) {
-        Toast.makeText(getApplicationContext(), String.valueOf(o), Toast.LENGTH_LONG).show();
+        Toast.makeText(LeaderboardUtil.getContext(), String.valueOf(o), Toast.LENGTH_LONG).show();
     }
 
     private void showSnackBar(Object o) {
@@ -276,5 +279,9 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         public int compare(Object o1, Object o2) {
             return (map.get(o2)).compareTo(map.get(o1));
         }
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

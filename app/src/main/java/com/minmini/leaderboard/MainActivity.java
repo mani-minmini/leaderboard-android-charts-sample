@@ -2,7 +2,6 @@ package com.minmini.leaderboard;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -55,7 +54,6 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
     private PieChart mChart;
     private ArrayList<PieEntry> entries;
     private MultiValueMap<String, Leaderboard> rawData;
-
     private ScrollView table_layout_bar_chart;
     private LinearLayout table_layouts;
 
@@ -100,7 +98,9 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         dataPrepare();
         update_chart.setOnClickListener(view -> dataPrepare());
 
-        show_bar_chart.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), BarChartActivity.class)));
+        show_bar_chart.setOnClickListener(view -> {
+            startActivity(LeaderboardUtil.getIntentBarChart());
+        });
 
         Legend l = mChart.getLegend();
         l.setEnabled(false);
@@ -114,13 +114,13 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         JsonArrayRequest request = new JsonArrayRequest(LEADERBOARD_URL,
                 response -> {
                     if (response == null) {
-                        Toast.makeText(getApplicationContext(), "Couldn't fetch the menu! Pleas try again.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(LeaderboardUtil.getContext(), "Couldn't fetch the menu! Pleas try again.", Toast.LENGTH_LONG).show();
                     }else{
                         setData(response);
                     }
                 }, error -> {
-//            Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            String jsonData = LeaderboardUtil.AssetJSONFile("data.json", getApplicationContext());
+//            Toast.makeText(context, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            String jsonData = LeaderboardUtil.AssetJSONFile("data.json", LeaderboardUtil.getContext());
             try {
                 setData(new JSONArray(jsonData));
             } catch (JSONException e) {
@@ -131,7 +131,7 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
     }
 
     private void showToast(Object o) {
-        Toast.makeText(getApplicationContext(), String.valueOf(o), Toast.LENGTH_LONG).show();
+        Toast.makeText(LeaderboardUtil.getContext(), String.valueOf(o), Toast.LENGTH_LONG).show();
     }
 
     private void setData(JSONArray response) {
@@ -292,4 +292,7 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         Log.i("PieChart", "nothing selected");
     }
 
+    @Override
+    public void onBackPressed() {
+    }
 }
