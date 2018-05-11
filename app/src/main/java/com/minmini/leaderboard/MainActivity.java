@@ -125,7 +125,7 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
                         setData(response);
                     }
                 }, error -> {
-            Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             String jsonData = LeaderboardUtil.AssetJSONFile("data.json", getApplicationContext());
             try {
                 setData(new JSONArray(jsonData));

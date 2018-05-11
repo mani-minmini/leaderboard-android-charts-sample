@@ -1,6 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'key0'
+            keyPassword '12345678'
+            storeFile file('./Leaderboard.jks')
+            storePassword '12345678'
+        }
+        config1 {
+        }
+    }
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.minmini.leaderboard"
@@ -9,6 +19,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
@@ -20,6 +31,8 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    productFlavors {
     }
 }
 

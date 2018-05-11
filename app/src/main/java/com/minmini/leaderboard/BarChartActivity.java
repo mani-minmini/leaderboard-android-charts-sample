@@ -20,7 +20,9 @@ import android.widget.Toast;
 
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.IMarker;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -35,6 +37,7 @@ import com.minmini.leaderboard.model.Leaderboard;
 import com.minmini.leaderboard.util.LeaderboardUtil;
 import com.minmini.leaderboard.util.LogMessage;
 import com.minmini.leaderboard.util.MultiValueMap;
+import com.minmini.leaderboard.util.MyMarkerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -83,7 +87,16 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         mChart.setHighlightFullBarEnabled(false);
         mChart.setPinchZoom(false);
         mChart.setScaleEnabled(false);
+        mChart.setHighlightPerTapEnabled(true);
+
+        mChart.setHovered(true);
+//         mChart.setDrawUnitsInChart(true);
+
         mChart.setOnChartValueSelectedListener(this);
+
+        IMarker marker = new MyMarkerView(getApplicationContext(), R.layout.tool_tip);
+
+        mChart.setMarker(marker);
 
         dataPrepare();
         update_chart.setOnClickListener(view -> dataPrepare());
@@ -119,13 +132,26 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     }
 
     private void setData(JSONArray response) {
-        Legend l = mChart.getLegend();
-        l.setWordWrapEnabled(true);
-        l.setForm(Legend.LegendForm.SQUARE);
-        l.setFormSize(9f);
-        l.setTextSize(11f);
-        l.setXEntrySpace(4f);
-        l.setEnabled(false);
+        List<LegendEntry> legendEntry = new ArrayList<>();
+        LegendEntry legendEntry1;
+
+        legendEntry1 = new LegendEntry();
+        legendEntry1.label = "A";
+        legendEntry.add(legendEntry1);
+        legendEntry1 = new LegendEntry();
+        legendEntry1.label = "B";
+        legendEntry.add(legendEntry1);
+
+        Legend legend = mChart.getLegend();
+        legend.setWordWrapEnabled(true);
+        legend.setForm(Legend.LegendForm.SQUARE);
+        legend.setFormSize(9f);
+        legend.setTextSize(11f);
+        legend.setXEntrySpace(4f);
+        legend.setYEntrySpace(5f);
+        legend.setEnabled(true);
+
+//        legend.setCustom(legendEntry);
         int count;
         ArrayList<BarEntry> entries = new ArrayList<>();
         players = new ArrayList<>();
