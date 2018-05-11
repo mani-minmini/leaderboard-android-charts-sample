@@ -60,8 +60,6 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     private MultiValueMap<String, Leaderboard> rawData;
     private RelativeLayout relativeLayout;
     private ScrollView table_layout_bar_chart;
-    private TableRow tableRow;
-    private TextView textView;
     private LinearLayout table_layouts;
 
     @Override
@@ -84,10 +82,12 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         mChart.setPinchZoom(false);
         mChart.setScaleEnabled(false);
         mChart.setHighlightPerTapEnabled(true);
+        mChart.setDrawGridBackground(false);
+        mChart.setDrawBarShadow(false);
+        mChart.setDrawValueAboveBar(false);
+        mChart.setLogEnabled(false);
 
-        mChart.setHovered(true);
-//         mChart.setDrawUnitsInChart(true);
-
+//        mChart
         mChart.setOnChartValueSelectedListener(this);
 
         IMarker marker = new MyMarkerView(LeaderboardUtil.getContext(), R.layout.tool_tip);
@@ -96,11 +96,10 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
 
         dataPrepare();
         update_chart.setOnClickListener(view -> dataPrepare());
-        show_pie_chart.setOnClickListener(view ->
-                {
-                    startActivity(LeaderboardUtil.getIntentPeiChart());
-                }
-        );
+        show_pie_chart.setOnClickListener(view -> {
+            startActivity(LeaderboardUtil.getIntentPeiChart());
+            finish();
+        });
     }
 
     private void dataPrepare() {
@@ -217,11 +216,11 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
             Date date;
             try {
                 date = dateFormat.parse(vals.getActivity_date());
-                tableRow = new TableRow(this);
+                TableRow tableRow = new TableRow(this);
                 tableRow.setGravity(Gravity.CENTER);
                 tableRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 
-                textView = new TextView(this);
+                TextView textView = new TextView(this);
                 textView.setBackgroundColor(Color.WHITE);
                 textView.setText(vals.getPlayer_name());
                 textView.setGravity(Gravity.CENTER);

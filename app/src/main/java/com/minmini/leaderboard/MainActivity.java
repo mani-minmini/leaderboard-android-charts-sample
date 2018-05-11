@@ -96,10 +96,13 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         // add a selection listener
         mChart.setOnChartValueSelectedListener(this);
         dataPrepare();
-        update_chart.setOnClickListener(view -> dataPrepare());
+        update_chart.setOnClickListener(view -> {
+            dataPrepare();
+        });
 
         show_bar_chart.setOnClickListener(view -> {
             startActivity(LeaderboardUtil.getIntentBarChart());
+            finish();
         });
 
         Legend l = mChart.getLegend();
@@ -115,7 +118,7 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
                 response -> {
                     if (response == null) {
                         Toast.makeText(LeaderboardUtil.getContext(), "Couldn't fetch the menu! Pleas try again.", Toast.LENGTH_LONG).show();
-                    }else{
+                    } else {
                         setData(response);
                     }
                 }, error -> {
@@ -138,7 +141,7 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         int count;
         entries = new ArrayList<>();
         rawData = new MultiValueMap<>();
-        for(int i=0; i < response.length(); i++) {
+        for (int i = 0; i < response.length(); i++) {
             try {
                 JSONObject jsonObject = response.getJSONObject(i);
                 rawData.putValue(jsonObject.getString("player_name"), new Leaderboard(jsonObject.getString("player_name"), jsonObject.getString("course"), jsonObject.getString("score"), jsonObject.getString("activity_date")));
@@ -212,15 +215,6 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         mChart.setVisibility(View.VISIBLE);
     }
 
-    private class MyComparator implements Comparator {
-        Map<String, Float> map;
-        MyComparator(Map<String, Float> map) {
-            this.map = map;
-        }
-        public int compare(Object o1, Object o2) {
-            return (map.get(o2)).compareTo(map.get(o1));
-        }
-    }
     @SuppressLint("SimpleDateFormat")
     @Override
     public void onValueSelected(Entry e, Highlight h) {
@@ -230,7 +224,7 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
                 "Value: " + e.getY() + ", index: " + h.getX()
                         + ", DataSet index: " + h.getDataSetIndex());
         PieEntry pieEntry = entries.get((int) Float.parseFloat(String.valueOf(h.getX())));
-        ArrayList<String> stringArrayList  = new ArrayList<>();
+        ArrayList<String> stringArrayList = new ArrayList<>();
 
         table_layout_bar_chart.removeAllViewsInLayout();
         TableLayout tableLayout = new TableLayout(this);
@@ -285,6 +279,18 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         table_layout_bar_chart.addView(tableLayout);
         table_layout_bar_chart.setVisibility(View.VISIBLE);
         table_layouts.setVisibility(View.VISIBLE);
+    }
+
+    private class MyComparator implements Comparator {
+        Map<String, Float> map;
+
+        MyComparator(Map<String, Float> map) {
+            this.map = map;
+        }
+
+        public int compare(Object o1, Object o2) {
+            return (map.get(o2)).compareTo(map.get(o1));
+        }
     }
 
     @Override
