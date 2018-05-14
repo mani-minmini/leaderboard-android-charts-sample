@@ -1,5 +1,6 @@
 package com.minmini.leaderboard.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -18,6 +19,7 @@ public class LeaderboardUtil implements LogMessage {
 
     private static Intent intentBarChart;
 
+    @SuppressLint("StaticFieldLeak")
     private static Context context;
 
     public static Context getContext() {

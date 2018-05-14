@@ -27,6 +27,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
@@ -86,6 +87,9 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         mChart.setDrawBarShadow(false);
         mChart.setDrawValueAboveBar(false);
         mChart.setLogEnabled(false);
+        mChart.setDrawBorders(false);
+
+
 
 //        mChart
         mChart.setOnChartValueSelectedListener(this);
@@ -193,11 +197,16 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         mChart.setData(data);
         mChart.highlightValues(null);
 
-        mChart.invalidate();
+
         mChart.setVisibility(View.VISIBLE);
 
         mChart.getAxisLeft().setAxisMaximum(100);
         mChart.getAxisLeft().setAxisMinimum(0);
+
+        for (IDataSet set : mChart.getData().getDataSets())
+            set.setDrawValues(false);
+
+        mChart.invalidate();
     }
 
     @SuppressLint("SimpleDateFormat")
