@@ -46,6 +46,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,6 +67,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     private RelativeLayout relativeLayout;
     private ScrollView table_layout_bar_chart;
     private LinearLayout table_layouts;
+    private DecimalFormat mFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         table_layouts.setVisibility(View.INVISIBLE);
         relativeLayout = findViewById(R.id.relativeLayout);
         table_layout_bar_chart = findViewById(R.id.table_layout_bar_chart);
-
+        mFormat = new DecimalFormat("0.0");
         Button update_chart = findViewById(R.id.update_chart);
         Button show_pie_chart = findViewById(R.id.show_pie_chart);
 
@@ -181,7 +183,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
             String key = entry.getKey();
             Float value = entry.getValue();
             if (count < 5) {
-                entries.add(new BarEntry(count, value, getResources().getDrawable(R.drawable.ic_launcher_background)));
+                entries.add(new BarEntry(count, Float.parseFloat(mFormat.format((double) value)), getResources().getDrawable(R.drawable.ic_launcher_background)));
                 players.add(key);
             }
             count++;
@@ -191,7 +193,27 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
 
         dataSet.setIconsOffset(new MPPointF(0, 0));
 
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        ArrayList<Integer> colors = new ArrayList<>();
+
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
+        dataSet.setColors(colors);
+
+//        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+
         dataSet.setHighLightAlpha(0);
 
         dataSet.setDrawIcons(false);
