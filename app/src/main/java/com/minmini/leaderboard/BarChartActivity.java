@@ -21,10 +21,13 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.IMarker;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
@@ -36,6 +39,7 @@ import com.minmini.leaderboard.model.Leaderboard;
 import com.minmini.leaderboard.util.LeaderboardUtil;
 import com.minmini.leaderboard.util.LogMessage;
 import com.minmini.leaderboard.util.MultiValueMap;
+import com.minmini.leaderboard.util.MyAxisValueFormatter;
 import com.minmini.leaderboard.util.MyMarkerView;
 
 import org.json.JSONArray;
@@ -135,14 +139,17 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     }
 
     private void setData(JSONArray response) {
-        Legend legend = mChart.getLegend();
-        legend.setWordWrapEnabled(true);
-        legend.setForm(Legend.LegendForm.SQUARE);
-        legend.setFormSize(9f);
-        legend.setTextSize(11f);
-        legend.setXEntrySpace(4f);
-        legend.setYEntrySpace(5f);
-        legend.setEnabled(true);
+
+        Legend l = mChart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
+        l.setForm(Legend.LegendForm.SQUARE);
+        l.setFormSize(9f);
+        l.setTextSize(11f);
+        l.setXEntrySpace(4f);
+
 
         int count;
         ArrayList<BarEntry> entries = new ArrayList<>();
@@ -179,8 +186,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
             }
             count++;
         }
-        BarDataSet dataSet = new BarDataSet(entries, null);
-
+        BarDataSet dataSet = new BarDataSet(entries, "Players's Leaderboard");
         dataSet.setDrawIcons(false);
 
         dataSet.setIconsOffset(new MPPointF(0, 0));
@@ -190,21 +196,35 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
 
         dataSet.setDrawIcons(false);
         BarData data = new BarData(dataSet);
+        dataSet.setDrawIcons(false);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(18f);
         data.setValueTextColor(Color.BLACK);
-
         mChart.setData(data);
         mChart.highlightValues(null);
 
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setDrawGridLines(false);
+        xAxis.setEnabled(false);
+
+        IAxisValueFormatter custom = new MyAxisValueFormatter();
+
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setLabelCount(5, true);
+        leftAxis.setValueFormatter(custom);
+        leftAxis.setAxisMinimum(0f);
+        leftAxis.setAxisMaximum(100f);
+
+        YAxis rightAxis = mChart.getAxisRight();
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setEnabled(false);
 
         mChart.setVisibility(View.VISIBLE);
 
-        mChart.getAxisLeft().setAxisMaximum(100);
-        mChart.getAxisLeft().setAxisMinimum(0);
-
-        for (IDataSet set : mChart.getData().getDataSets())
+        for (IDataSet set : mChart.getData().getDataSets()) {
             set.setDrawValues(false);
+        }
 
         mChart.invalidate();
     }
