@@ -95,8 +95,6 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         mChart.setLogEnabled(false);
         mChart.setDrawBorders(false);
 
-
-
 //        mChart
         mChart.setOnChartValueSelectedListener(this);
 
