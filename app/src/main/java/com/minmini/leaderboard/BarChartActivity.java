@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.IMarker;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -41,6 +40,7 @@ import com.minmini.leaderboard.util.LeaderboardUtil;
 import com.minmini.leaderboard.util.LogMessage;
 import com.minmini.leaderboard.util.MultiValueMap;
 import com.minmini.leaderboard.util.MyAxisValueFormatter;
+import com.minmini.leaderboard.util.MyComparator;
 import com.minmini.leaderboard.util.MyMarkerView;
 
 import org.json.JSONArray;
@@ -51,7 +51,6 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -96,12 +95,8 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         mChart.setLogEnabled(false);
         mChart.setDrawBorders(false);
 
-//        mChart
         mChart.setOnChartValueSelectedListener(this);
-
-        IMarker marker = new MyMarkerView(LeaderboardUtil.getContext(), R.layout.tool_tip);
-
-        mChart.setMarker(marker);
+        mChart.setMarker(new MyMarkerView(LeaderboardUtil.getContext(), R.layout.tool_tip));
 
         dataPrepare();
         update_chart.setOnClickListener(view -> dataPrepare());
@@ -173,7 +168,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
             }
             board.put(entry.getKey(), score / entry.getValue().size());
         }
-        BarChartActivity.MyComparator comp = new BarChartActivity.MyComparator(board);
+        MyComparator comp = new MyComparator(board);
         Map<String, Float> newMap = new TreeMap<String, Float>(comp);
         newMap.putAll(board);
         showLog(newMap);
@@ -187,7 +182,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
             }
             count++;
         }
-        BarDataSet dataSet = new BarDataSet(entries, "Players's Leaderboard");
+        BarDataSet dataSet = new BarDataSet(entries, "Players Leaderboard");
         dataSet.setDrawIcons(false);
 
         dataSet.setIconsOffset(new MPPointF(0, 0));
@@ -321,19 +316,6 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     @Override
     public void onNothingSelected() {
         Log.i("BarChart", "nothing selected");
-    }
-
-    private class MyComparator implements Comparator {
-
-        Map<String, Float> map;
-
-        MyComparator(Map<String, Float> map) {
-            this.map = map;
-        }
-
-        public int compare(Object o1, Object o2) {
-            return (map.get(o2)).compareTo(map.get(o1));
-        }
     }
 
     @Override

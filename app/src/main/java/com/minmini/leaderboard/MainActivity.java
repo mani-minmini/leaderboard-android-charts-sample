@@ -32,6 +32,7 @@ import com.minmini.leaderboard.model.Leaderboard;
 import com.minmini.leaderboard.util.LeaderboardUtil;
 import com.minmini.leaderboard.util.LogMessage;
 import com.minmini.leaderboard.util.MultiValueMap;
+import com.minmini.leaderboard.util.MyComparator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +41,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -277,18 +277,6 @@ public class MainActivity extends Activity implements OnChartValueSelectedListen
         table_layout_bar_chart.addView(tableLayout);
         table_layout_bar_chart.setVisibility(View.VISIBLE);
         table_layouts.setVisibility(View.VISIBLE);
-    }
-
-    private class MyComparator implements Comparator {
-        Map<String, Float> map;
-
-        MyComparator(Map<String, Float> map) {
-            this.map = map;
-        }
-
-        public int compare(Object o1, Object o2) {
-            return (map.get(o2)).compareTo(map.get(o1));
-        }
     }
 
     @Override
