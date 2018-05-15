@@ -2,6 +2,7 @@ package com.minmini.leaderboard;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -264,7 +265,6 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
             SimpleDateFormat desiredDateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
             Date date;
             try {
-                date = dateFormat.parse(vals.getActivity_date());
                 TableRow tableRow = new TableRow(this);
                 tableRow.setGravity(Gravity.CENTER);
                 tableRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
@@ -293,6 +293,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
                 textView.setLayoutParams(new TableRow.LayoutParams(200, TableRow.LayoutParams.WRAP_CONTENT));
                 tableRow.addView(textView);
 
+                date = dateFormat.parse(vals.getActivity_date());
                 textView = new TextView(this);
                 textView.setGravity(Gravity.CENTER);
                 textView.setBackgroundColor(Color.WHITE);
@@ -302,10 +303,16 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
                 tableRow.addView(textView);
 
                 tableLayout.addView(tableRow);
+                tableLayout.setTag(vals.getPlayer_name());
             } catch (ParseException e1) {
                 e1.printStackTrace();
             }
         }
+        tableLayout.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), CourseBarChartActivity.class);
+            intent.putExtra("player_name", String.valueOf(view.getTag()));
+            startActivity(intent);
+        });
         table_layout_bar_chart.addView(tableLayout);
         table_layout_bar_chart.setVisibility(View.VISIBLE);
         table_layouts.setVisibility(View.VISIBLE);
