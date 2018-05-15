@@ -68,6 +68,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     private ScrollView table_layout_bar_chart;
     private LinearLayout table_layouts;
     private DecimalFormat mFormat;
+    private String response;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +136,7 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
     }
 
     private void setData(JSONArray response) {
-
+        this.response = String.valueOf(response);
         Legend l = mChart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
@@ -145,7 +146,6 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         l.setFormSize(9f);
         l.setTextSize(11f);
         l.setXEntrySpace(4f);
-
 
         int count;
         ArrayList<BarEntry> entries = new ArrayList<>();
@@ -306,6 +306,8 @@ public class BarChartActivity extends Activity implements OnChartValueSelectedLi
         tableLayout.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), CourseBarChartActivity.class);
             intent.putExtra("player_name", String.valueOf(view.getTag()));
+            intent.putExtra("response", this.response);
+
             startActivity(intent);
         });
         table_layout_bar_chart.addView(tableLayout);

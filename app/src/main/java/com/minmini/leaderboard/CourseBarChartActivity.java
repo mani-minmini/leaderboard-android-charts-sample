@@ -12,9 +12,7 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -30,7 +28,6 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.minmini.leaderboard.app.MyApplication;
 import com.minmini.leaderboard.model.Leaderboard;
 import com.minmini.leaderboard.util.LeaderboardUtil;
 import com.minmini.leaderboard.util.LogMessage;
@@ -54,8 +51,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
-import static com.minmini.leaderboard.util.LeaderboardUtil.LEADERBOARD_URL;
-
 public class CourseBarChartActivity extends Activity implements OnChartValueSelectedListener, LogMessage {
 
 
@@ -66,13 +61,15 @@ public class CourseBarChartActivity extends Activity implements OnChartValueSele
     private LinearLayout table_layouts;
     private DecimalFormat mFormat;
 
+    private String response;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_bar_chart);
 
         String player_name = Objects.requireNonNull(getIntent().getExtras()).getString("player_name");
-
+        response = Objects.requireNonNull(getIntent().getExtras()).getString("response");
 
         table_layouts = findViewById(R.id.table_layouts);
         table_layouts.setVisibility(View.INVISIBLE);
@@ -97,28 +94,12 @@ public class CourseBarChartActivity extends Activity implements OnChartValueSele
         mChart.setOnChartValueSelectedListener(this);
         mChart.setMarker(new MyMarkerView(LeaderboardUtil.getContext(), R.layout.tool_tip));
 
-        dataPrepare();
+        try {
+            setData(new JSONArray(response));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-    }
-
-    private void dataPrepare() {
-        JsonArrayRequest request = new JsonArrayRequest(LEADERBOARD_URL,
-                response -> {
-                    if (response == null) {
-                        Toast.makeText(LeaderboardUtil.getContext(), "Couldn't fetch the menu! Pleas try again.", Toast.LENGTH_LONG).show();
-                    } else {
-                        setData(response);
-                    }
-                }, error -> {
-//            Toast.makeText(LeaderboardUtil.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            String jsonData = LeaderboardUtil.AssetJSONFile("data.json", LeaderboardUtil.getContext());
-            try {
-                setData(new JSONArray(jsonData));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        });
-        MyApplication.getInstance().addToRequestQueue(request);
     }
 
 
