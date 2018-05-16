@@ -60,22 +60,19 @@ public class CourseBarChartActivity extends Activity implements OnChartValueSele
     private ScrollView table_layout_bar_chart;
     private LinearLayout table_layouts;
     private DecimalFormat mFormat;
-
-    private String response;
+    private static String player_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_bar_chart);
 
-        String player_name = Objects.requireNonNull(getIntent().getExtras()).getString("player_name");
-        response = Objects.requireNonNull(getIntent().getExtras()).getString("response");
+        player_name = Objects.requireNonNull(getIntent().getExtras()).getString("player_name");
 
         table_layouts = findViewById(R.id.table_layouts);
         table_layouts.setVisibility(View.INVISIBLE);
         table_layout_bar_chart = findViewById(R.id.table_layout_bar_chart);
         mFormat = new DecimalFormat("0.0");
-
 
         mChart = findViewById(R.id.chart2);
         mChart.getDescription().setEnabled(false);
@@ -95,15 +92,14 @@ public class CourseBarChartActivity extends Activity implements OnChartValueSele
         mChart.setMarker(new MyMarkerView(LeaderboardUtil.getContext(), R.layout.tool_tip));
 
         try {
-            setData(new JSONArray(response));
+            setData(new JSONArray(Objects.requireNonNull(getIntent().getExtras()).getString("response")));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
 
-    private void setData(JSONArray response) {
+    private void setData(JSONArray responseJsonArray) {
 
         Legend l = mChart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
@@ -119,10 +115,22 @@ public class CourseBarChartActivity extends Activity implements OnChartValueSele
         ArrayList<BarEntry> entries = new ArrayList<>();
         players = new ArrayList<>();
         rawData = new MultiValueMap<>();
-        for (int i = 0; i < response.length(); i++) {
+        JSONArray currentPlayer = new JSONArray();
+        for (int i = 0; i < responseJsonArray.length(); i++) {
             try {
-                JSONObject jsonObject = response.getJSONObject(i);
-                rawData.putValue(jsonObject.getString("player_name"), new Leaderboard(jsonObject.getString("player_name"), jsonObject.getString("course"), jsonObject.getString("score"), jsonObject.getString("activity_date")));
+                JSONObject jsonObject = responseJsonArray.getJSONObject(i);
+                if (jsonObject.getString("player_name").equalsIgnoreCase(player_name)) {
+                    currentPlayer.put(jsonObject);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (int i = 0; i < currentPlayer.length(); i++) {
+            try {
+                JSONObject jsonObject = currentPlayer.getJSONObject(i);
+                rawData.putValue(jsonObject.getString("course"), new Leaderboard(jsonObject.getString("player_name"), jsonObject.getString("course"), jsonObject.getString("score"), jsonObject.getString("activity_date")));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -136,6 +144,7 @@ public class CourseBarChartActivity extends Activity implements OnChartValueSele
             }
             board.put(entry.getKey(), score / entry.getValue().size());
         }
+
         MyComparator comp = new MyComparator(board);
         Map<String, Float> newMap = new TreeMap<String, Float>(comp);
         newMap.putAll(board);
